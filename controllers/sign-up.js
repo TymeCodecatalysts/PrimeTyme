@@ -5,7 +5,7 @@ module.exports = {
   registerRouter() {
     const router = express.Router();
 
-    router.get('/', this.index);
+    router.get('/', this.index); // checked 
     router.post('/', this.submit);
 
     return router;
@@ -17,7 +17,6 @@ module.exports = {
     models.User.create({
       firstName: req.body.firstName,
       lastName: req.body.lastName,
-      username: req.body.username,
       email: req.body.email,
       password: req.body.password,
     }).then((user) => {

@@ -5,21 +5,22 @@ module.exports = {
   registerRouter() {
     const router = express.Router();
 
-    router.get('/', this.index);
-    router.get('/:username', this.show);
+    router.get('/', this.index);  // checked
+    router.get('/:email', this.show);
 
     return router;
   },
   index(req, res) {
     models.User.findAll({
     }).then((allUsers) => {
-      res.render('users', { allUsers });
+      //res.render('users', { allUsers });
+      res.json(allUsers);
     });
   },
   show(req, res) {
     models.User.findOne({
       where: {
-        username: req.params.username,
+        email: req.params.email,
       },
       include: [{
         model: models.Post,

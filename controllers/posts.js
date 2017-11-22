@@ -42,11 +42,13 @@ module.exports = {
   create(req, res) {
     // using the association
     req.user.createPost({
-      slug: getSlug(req.body.title.toLowerCase()),
-      title: req.body.title.toLowerCase(),
+      //slug: getSlug(req.body.title.toLowerCase()),
+      //title: req.body.title.toLowerCase(),
       body: req.body.body,
+      dateToSend: req.body.dateToSend,
+      timeToSend: req.body.timeToSend
     }).then((post) => {
-      res.redirect(`/posts/${req.user.username}/${post.slug}`);
+      res.redirect(`/posts/${req.user.email}/${post.slug}`);
     }).catch(() => {
       res.render('posts/new');
     });
