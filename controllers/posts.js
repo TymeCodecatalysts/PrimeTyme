@@ -6,25 +6,25 @@ module.exports = {
   registerRouter() {
     const router = express.Router();
 
-    router.get('/', this.index);
+    router.get('/', this.index); // we might not want this in the future
     router.get('/new', Redirect.ifNotLoggedIn('/login'), this.new);
     router.post('/', Redirect.ifNotLoggedIn('/login'), this.create);
-    router.get('/:username/:slug', this.show);
-    router.get('/:username/:slug/edit',
-                Redirect.ifNotLoggedIn('/login'),
-                Redirect.ifNotAuthorized('/posts'),
-                this.edit
-              );
-    router.put('/:username/:slug',
-                Redirect.ifNotLoggedIn('/login'),
-                Redirect.ifNotAuthorized('/posts'),
-                this.update
-              );
-    router.delete('/:username/:slug',
-                   Redirect.ifNotLoggedIn('/login'),
-                   Redirect.ifNotAuthorized('/posts'),
-                   this.delete
-                  );
+    router.get('/:username/:title', this.show);
+    router.get('/:username/:title/edit',
+      Redirect.ifNotLoggedIn('/login'),
+      Redirect.ifNotAuthorized('/posts'),
+      this.edit
+    );
+    router.put('/:username/:title',
+      Redirect.ifNotLoggedIn('/login'),
+      Redirect.ifNotAuthorized('/posts'),
+      this.update
+    );
+    router.delete('/:username/:title',
+      Redirect.ifNotLoggedIn('/login'),
+      Redirect.ifNotAuthorized('/posts'),
+      this.delete
+    );
 
     return router;
   },
@@ -41,13 +41,12 @@ module.exports = {
   create(req, res) {
     // using the association
     req.user.createPost({
-      //slug: getSlug(req.body.title.toLowerCase()),
-      //title: req.body.title.toLowerCase(),
+      title: req.body.title,
       body: req.body.body,
       dateToSend: req.body.dateToSend,
-      timeToSend: req.body.timeToSend
+      timeToSend: req.body.timeToSend,
     }).then((post) => {
-      res.redirect(`/posts/${req.user.email}/${post.slug}`);
+      res.redirect(`/posts/${req.user.email}/${post.title}`);
     }).catch(() => {
       res.render('posts/new');
     });
@@ -70,7 +69,7 @@ module.exports = {
     // using the association
     models.Post.findOne({
       where: {
-        slug: req.params.slug,
+        title: req.params.title,
       },
       include: [{
         model: models.User,
@@ -101,7 +100,7 @@ module.exports = {
   edit(req, res) {
     models.Post.findOne({
       where: {
-        slug: req.params.slug,
+        title: req.params.title,
       },
       include: [{
         model: models.User,
@@ -115,13 +114,14 @@ module.exports = {
   },
   update(req, res) {
     models.Post.update({
-      title: req.body.title.toLowerCase(),
-      slug: getSlug(req.body.title.toLowerCase()),
+      title: req.body.title,
       body: req.body.body,
+      dateToSend: req.body.dateToSend,
+      timeToSend: req.body.timeToSend
     },
     {
       where: {
-        slug: req.params.slug,
+        title: req.params.title,
       },
       include: [{
         model: models.User,
@@ -138,7 +138,7 @@ module.exports = {
   delete(req, res) {
     models.Post.destroy({
       where: {
-        slug: req.params.slug,
+        title: req.params.title,
       },
       include: [{
         model: models.User,

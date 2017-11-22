@@ -8,14 +8,14 @@ module.exports = (sequelize, DataTypes) => {
     //     notEmpty: true,
     //   },
     // },
-    // title: {
-    //   type: DataTypes.STRING,
-    //   unique: 'compositeIndex',
-    //   allowNull: false,
-    //   validate: {
-    //     notEmpty: true,
-    //   },
-    // },
+    title: {
+      type: DataTypes.STRING,
+      unique: 'compositeIndex',
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
     body: {
       type: DataTypes.STRING,
       allowNull: false,
