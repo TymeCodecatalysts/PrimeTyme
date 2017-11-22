@@ -1,7 +1,6 @@
 const express = require('express');
 const models = require('../models');
 const Redirect = require('../middlewares/redirect');
-const getSlug = require('speakingurl');
 
 module.exports = {
   registerRouter() {

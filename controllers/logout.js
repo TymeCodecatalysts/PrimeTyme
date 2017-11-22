@@ -4,7 +4,7 @@ module.exports = {
   registerRouter() {
     const router = express.Router();
 
-    router.post('/', this.logout);
+    router.post('/', this.logout); // checked
 
     return router;
   },

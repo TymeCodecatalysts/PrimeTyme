@@ -6,7 +6,7 @@ module.exports = {
     const router = express.Router();
 
     router.get('/', this.index); // checked 
-    router.post('/', this.submit);
+    router.post('/', this.submit); // checked
 
     return router;
   },
