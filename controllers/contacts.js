@@ -6,49 +6,56 @@ module.exports = {
   registerRouter() {
     const router = express.Router();
 
-    router.get('/', this.index);
-    router.get('/new', Redirect.ifNotLoggedIn('/login'), this.new);
-    router.post('/', Redirect.ifNotLoggedIn('/login'), this.create); // this was changed
-    router.get('/:username/:slug', this.show);
-    router.get('/:username/:slug/edit',
-      Redirect.ifNotLoggedIn('/login'),
-      Redirect.ifNotAuthorized('/posts'),
-      this.edit
-    );
-    router.put('/:username/:contactFirstName/:contactLastName',
-      Redirect.ifNotLoggedIn('/login'),
-      Redirect.ifNotAuthorized('/posts'),
-      this.update
-    );
-    router.delete('/:username/:contactFirstName/:contactLastName',
-      Redirect.ifNotLoggedIn('/login'),
-      Redirect.ifNotAuthorized('/posts'),
-      this.delete
-    );
+    router.get('/new', Redirect.ifNotLoggedIn('/login'), this.index); // checked
+    // router.get('/new', Redirect.ifNotLoggedIn('/login'), this.new); // commenting this out because we need the views
+    router.post('/', Redirect.ifNotLoggedIn('/login'), this.submit); 
+    //router.get('/:username/:slug', this.show);
+    // router.get('/:username/:slug/edit',
+    //   Redirect.ifNotLoggedIn('/login'),
+    //   Redirect.ifNotAuthorized('/posts'),
+    //   this.edit
+    // );
+    // router.put('/:username/:contactFirstName/:contactLastName',
+    //   Redirect.ifNotLoggedIn('/login'),
+    //   Redirect.ifNotAuthorized('/posts'),
+    //   this.update
+    // );
+    // router.delete('/:username/:contactFirstName/:contactLastName',
+    //   Redirect.ifNotLoggedIn('/login'),
+    //   Redirect.ifNotAuthorized('/posts'),
+    //   this.delete
+    // );
 
     return router;
   },
   index(req, res) {
-    models.Contacts.findAll({
-      include: [{model: models.User}]
-    }).then((allContacts) => {
-      res.render('contacts', { allContacts });
-    });
+    res.render('contacts');
+    // models.Contacts.findAll({
+    //   include: [{model: models.User}]
+    // }).then((allContacts) => {
+    //   // res.render('contacts', { allContacts });
+    //   res.json(allContacts);
+    // });
   },
   new(req, res) {
-    res.render('contacts/new');
+    res.render('contacts/new');  // there should not be anything to render 
   },
-  create(req, res) {
+  submit(req, res) {
     // using the association
     req.user.createContact({
       contactFirstName: req.body.contactFirstName,
       contactLastName: req.body.contactLastName,
-      contactNumber: req.body.number,
-    }).then((post) => {
-      res.redirect(`/posts/${req.user.username}/${post.slug}`);
-    }).catch(() => {
-      res.render('posts/new');
+      contactNumber: req.body.contactNumber
+    })
+    .then((contact) => {
+      res.json(contact);
     });
+    // commenting this out because there is no page that we need to render
+    // .then((post) => {
+    //   res.redirect(`/posts/${req.user.username}/${post.slug}`);
+    // }).catch(() => {
+    //   res.render('posts/new');
+    // });
 
     // Without the sequelize association
     /*

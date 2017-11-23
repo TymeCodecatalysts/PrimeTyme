@@ -1,8 +1,27 @@
 module.exports = (sequelize, DataTypes) => {
 	var Contacts = sequelize.define('Contacts', {
-		contactFirstName: DataTypes.STRING,
-		contactLastName: DataTypes.STRING,
-		contactNumber: DataTypes.STRING,
+		contactFirstName: {
+			type: DataTypes.STRING,
+			allowNull: false,
+			validate: {
+				notEmpty: true,
+			}
+		},
+		contactLastName: {
+			type: DataTypes.STRING,
+			allowNull: false,
+			validate: {
+				notEmpty: true,
+			}
+		},
+		contactNumber: {
+			type: DataTypes.INTEGER,
+			unique: true,
+			allowNull: false,
+			validate: {
+				notEmpty: true,
+			}
+		}
 	});
 
 	Contacts.associate = function(models) {
