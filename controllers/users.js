@@ -6,7 +6,7 @@ module.exports = {
     const router = express.Router();
 
     router.get('/', this.index);  // checked
-    router.get('/:email', this.show);
+    router.get('/:username', this.show); // we might not want this in the future, checked
 
     return router;
   },
@@ -20,14 +20,18 @@ module.exports = {
   show(req, res) {
     models.User.findOne({
       where: {
-        email: req.params.email,
+        username: req.params.username,
       },
       include: [{
         model: models.Post,
+        include: [{
+          model: models.Contacts
+        }]
       }],
     }).then((user) => {
       if(user) {
-        res.render('users/single', { user: user, allPosts: user.posts });
+        // res.render('users/single', { user: user, allPosts: user.posts });
+        res.json(user);
       } else {
         res.redirect('/users');
       }

@@ -17,6 +17,7 @@ module.exports = {
     models.User.create({
       firstName: req.body.firstName,
       lastName: req.body.lastName,
+      username: req.body.username,
       email: req.body.email,
       password: req.body.password,
     }).then((user) => {

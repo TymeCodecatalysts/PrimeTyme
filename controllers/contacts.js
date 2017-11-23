@@ -1,7 +1,6 @@
 const express = require('express');
 const models = require('../models');
 const Redirect = require('../middlewares/redirect');
-const getSlug = require('speakingurl');
 
 module.exports = {
   registerRouter() {
@@ -9,7 +8,7 @@ module.exports = {
 
     router.get('/', this.index);
     router.get('/new', Redirect.ifNotLoggedIn('/login'), this.new);
-    router.post('/', Redirect.ifNotLoggedIn('/login'), this.create);
+    router.post('/', Redirect.ifNotLoggedIn('/login'), this.create); // this was changed
     router.get('/:username/:slug', this.show);
     router.get('/:username/:slug/edit',
                 Redirect.ifNotLoggedIn('/login'),

@@ -1,8 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
 	var Contacts = sequelize.define('Contacts', {
-		contact_first_name: DataTypes.STRING,
-		contact_last_name: DataTypes.STRING,
-		contact_number: DataTypes.STRING,
+		contactFirstName: DataTypes.STRING,
+		contactLastName: DataTypes.STRING,
+		contactNumber: DataTypes.STRING,
 	});
 
 	Contacts.associate = function(models) {

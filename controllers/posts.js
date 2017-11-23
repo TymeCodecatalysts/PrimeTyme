@@ -6,10 +6,10 @@ module.exports = {
   registerRouter() {
     const router = express.Router();
 
-    router.get('/', this.index); // we might not want this in the future
-    router.get('/new', Redirect.ifNotLoggedIn('/login'), this.new);
-    router.post('/', Redirect.ifNotLoggedIn('/login'), this.create);
-    router.get('/:username/:title', this.show);
+    router.get('/', this.index); // we might not want this in the future, checked
+    router.get('/new', Redirect.ifNotLoggedIn('/login'), this.new); // checked
+    router.post('/', Redirect.ifNotLoggedIn('/login'), this.create); // checked
+    router.get('/:username/:title', this.show); // checked
     router.get('/:username/:title/edit',
       Redirect.ifNotLoggedIn('/login'),
       Redirect.ifNotAuthorized('/posts'),
@@ -33,6 +33,7 @@ module.exports = {
       include: [{model: models.User}]
     }).then((allPosts) => {
       res.render('posts', { allPosts });
+      // res.json(allPosts);
     });
   },
   new(req, res) {
@@ -43,10 +44,10 @@ module.exports = {
     req.user.createPost({
       title: req.body.title,
       body: req.body.body,
-      dateToSend: req.body.dateToSend,
-      timeToSend: req.body.timeToSend,
+      dateToSend: req.body.date,
+      timeToSend: req.body.time,
     }).then((post) => {
-      res.redirect(`/posts/${req.user.email}/${post.title}`);
+      res.redirect(`/posts/${req.user.username}/${post.title}`);
     }).catch(() => {
       res.render('posts/new');
     });
@@ -132,7 +133,7 @@ module.exports = {
       returning: true,
     }).then(([numRows, rows]) => {
       const post = rows[0];
-      res.redirect(`/posts/${req.user.username}/${post.slug}`);
+      res.redirect(`/posts/${req.user.username}/${post.title}`);
     });
   },
   delete(req, res) {
