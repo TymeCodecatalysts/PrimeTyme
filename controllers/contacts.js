@@ -11,20 +11,20 @@ module.exports = {
     router.post('/', Redirect.ifNotLoggedIn('/login'), this.create); // this was changed
     router.get('/:username/:slug', this.show);
     router.get('/:username/:slug/edit',
-                Redirect.ifNotLoggedIn('/login'),
-                Redirect.ifNotAuthorized('/posts'),
-                this.edit
-              );
-    router.put('/:username/:slug',
-                Redirect.ifNotLoggedIn('/login'),
-                Redirect.ifNotAuthorized('/posts'),
-                this.update
-              );
-    router.delete('/:username/:slug',
-                   Redirect.ifNotLoggedIn('/login'),
-                   Redirect.ifNotAuthorized('/posts'),
-                   this.delete
-                  );
+      Redirect.ifNotLoggedIn('/login'),
+      Redirect.ifNotAuthorized('/posts'),
+      this.edit
+    );
+    router.put('/:username/:contactFirstName/:contactLastName',
+      Redirect.ifNotLoggedIn('/login'),
+      Redirect.ifNotAuthorized('/posts'),
+      this.update
+    );
+    router.delete('/:username/:contactFirstName/:contactLastName',
+      Redirect.ifNotLoggedIn('/login'),
+      Redirect.ifNotAuthorized('/posts'),
+      this.delete
+    );
 
     return router;
   },
@@ -41,9 +41,9 @@ module.exports = {
   create(req, res) {
     // using the association
     req.user.createContact({
-      slug: getSlug(req.body.title.toLowerCase()),
-      title: req.body.title.toLowerCase(),
-      body: req.body.body,
+      contactFirstName: req.body.contactFirstName,
+      contactLastName: req.body.contactLastName,
+      contactNumber: req.body.number,
     }).then((post) => {
       res.redirect(`/posts/${req.user.username}/${post.slug}`);
     }).catch(() => {
