@@ -1,0 +1,47 @@
+<header class="intro-header" style="background-image: url('/img/contact-bg.jpg')">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-heading">
+          <h1>Edit A Contact</h1>
+          <hr class="small">
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <form name="edit-contact" method="POST" action="/contacts/{{contact.contactFirstName}}?_method=PUT">
+        <div class="row control-group">
+          <div class="form-group col-xs-12 floating-label-form-group controls">
+            <label>Contact's First Name</label>
+            <input type="text" class="form-control" name="contactFirstName" value="{{contact.contactFirstName}}" required data-validation-required-message="Please enter your contact's first name.">
+            <p class="help-block text-danger"></p>
+          </div>
+        </div>
+        <div class="row control-group">
+          <div class="form-group col-xs-12 floating-label-form-group controls">
+            <label>Contact's Last Name</label>
+            <input type="text" class="form-control" name="contactLastName" value="{{contact.contactLastName}}" required data-validation-required-message="Please enter your contact's last name.">
+            <p class="help-block text-danger"></p>
+          </div>
+        </div>
+        <div class="row control-group">
+          <div class="form-group col-xs-12 floating-label-form-group controls">
+            <label>Contact's Phone Number</label>
+            <input type="tel" class="form-control" name="contactNumber" value="{{contact.contactNumber}}" required data-validation-required-message="Please enter your contact's phone number.">
+            <p class="help-block text-danger"></p>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="form-group col-xs-6 text-right">
+              <button type="submit" class="btn btn-default">Save</button>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>

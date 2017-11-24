@@ -6,39 +6,28 @@ module.exports = {
   registerRouter() {
     const router = express.Router();
 
-    router.get('/new', Redirect.ifNotLoggedIn('/login'), this.index); // checked
-    // router.get('/new', Redirect.ifNotLoggedIn('/login'), this.new); // commenting this out because we need the views
-    router.post('/', Redirect.ifNotLoggedIn('/login'), this.submit); 
-    //router.get('/:username/:slug', this.show);
-    // router.get('/:username/:slug/edit',
-    //   Redirect.ifNotLoggedIn('/login'),
-    //   Redirect.ifNotAuthorized('/posts'),
-    //   this.edit
-    // );
-    // router.put('/:username/:contactFirstName/:contactLastName',
-    //   Redirect.ifNotLoggedIn('/login'),
-    //   Redirect.ifNotAuthorized('/posts'),
-    //   this.update
-    // );
-    // router.delete('/:username/:contactFirstName/:contactLastName',
-    //   Redirect.ifNotLoggedIn('/login'),
-    //   Redirect.ifNotAuthorized('/posts'),
-    //   this.delete
-    // );
+    router.get('/', Redirect.ifNotLoggedIn('/login'), this.index); // checked
+    router.get('/new', Redirect.ifNotLoggedIn('/login'), this.new); // checked
+    router.get('/:contactFirstName', Redirect.ifNotLoggedIn('/login'), this.newMsg);
+    router.post('/', Redirect.ifNotLoggedIn('/login'), this.submit); // checked
+    // router.post('/:contactFirstName', Redirect.ifNotLoggedIn('/login'), this.createMsg); // this will take you to chats
+    router.get('/:contactFirstName/edit', Redirect.ifNotLoggedIn('/login'), this.edit); // checked
+    router.put('/:contactFirstName', Redirect.ifNotLoggedIn('/login'), this.update); // checked
+    router.delete('/:contactFirstName', Redirect.ifNotLoggedIn('/login'), this.delete); // checked
 
     return router;
   },
   index(req, res) {
-    res.render('contacts');
-    // models.Contacts.findAll({
-    //   include: [{model: models.User}]
-    // }).then((allContacts) => {
-    //   // res.render('contacts', { allContacts });
-    //   res.json(allContacts);
-    // });
+    models.Contacts.findAll({
+      where: {
+        userId: req.user.id
+      }
+    }).then((allContacts) => {
+      res.render('contacts', {allContacts});
+    })
   },
   new(req, res) {
-    res.render('contacts/new');  // there should not be anything to render 
+    res.render('contacts/new');   
   },
   submit(req, res) {
     // using the association
@@ -47,112 +36,59 @@ module.exports = {
       contactLastName: req.body.contactLastName,
       contactNumber: req.body.contactNumber
     })
-    .then((contact) => {
-      res.json(contact);
+    .then((allContacts) => {
+      res.redirect('contacts');
     });
-    // commenting this out because there is no page that we need to render
-    // .then((post) => {
-    //   res.redirect(`/posts/${req.user.username}/${post.slug}`);
-    // }).catch(() => {
-    //   res.render('posts/new');
-    // });
-
-    // Without the sequelize association
-    /*
-    models.Post.create({
-      userId: req.user.id,
-      slug: getSlug(req.body.title.toLowerCase()),
-      title: req.body.title.toLowerCase(),
-      body: req.body.body,
-    }).then((post) => {
-      res.redirect(`/posts/${req.user.username}/${post.slug}`);
-    }).catch(() => {
-      res.render('posts/new');
-    });
-    */
   },
-  show(req, res) {
-    // using the association
-    models.Post.findOne({
-      where: {
-        slug: req.params.slug,
-      },
-      include: [{
-        model: models.User,
-        where: {
-          username: req.params.username,
-        },
-      }],
-    }).then((post) => {
-      (post ? res.render('posts/single', { post, user: post.user }) : res.redirect('/posts'))
-    });
-
-    // without the sequelize association (explicit queries)
-    // models.User.findOne({
+  newMsg(req, res) {
+    res.render('posts/new');
+    // models.Contacts.findAll({
     //   where: {
-    //     username: req.params.username,
+    //     userId: req.user.id
     //   }
-    // }).then((user) => {
-    //   models.Post.findOne({
-    //     where: {
-    //       userId: user.id,
-    //       slug: req.params.slug,
-    //     }
-    //   }).then((post) =>
-    //     (post ? res.render('posts/single', { post, user }) : res.redirect('/posts'))
-    //   );
-    // });
+    // }).then((allContacts) => {
+    //   res.render('contacts/newMsg', {allContacts});
+    // })
   },
+  // createMsg(req, res) {
+  //   models.Contacts.findOne({
+  //     where: {
+  //       contactFirstName: req.params.contactFirstName,
+  //     }
+  //   }).then((contact) => {
+  //     (contact ? res.render('contacts/single', {contact}) : res.redirect('/contacts'))
+  //   });
+  // },
   edit(req, res) {
-    models.Post.findOne({
+    models.Contacts.findOne({
       where: {
-        slug: req.params.slug,
+        contactFirstName: req.params.contactFirstName,
       },
-      include: [{
-        model: models.User,
-        where: {
-          username: req.params.username,
-        },
-      }],
-    }).then((post) =>
-      (post ? res.render('posts/edit', { post }) : res.redirect('/posts'))
+    }).then((contact) =>
+      (contact ? res.render('contacts/edit', { contact }) : res.redirect('/contacts'))
     );
   },
   update(req, res) {
-    models.Post.update({
-      title: req.body.title.toLowerCase(),
-      slug: getSlug(req.body.title.toLowerCase()),
-      body: req.body.body,
+    models.Contacts.update({
+      contactFirstName: req.body.contactFirstName,
+      contactLastName: req.body.contactLastName,
+      contactNumber: req.body.contactNumber,
     },
     {
       where: {
-        slug: req.params.slug,
+        contactFirstName: req.params.contactFirstName,
       },
-      include: [{
-        model: models.User,
-        where: {
-          username: req.params.username,
-        },
-      }],
-      returning: true,
-    }).then(([numRows, rows]) => {
-      const post = rows[0];
-      res.redirect(`/posts/${req.user.username}/${post.slug}`);
+    }).then(() => {
+      res.redirect('/contacts');
     });
   },
   delete(req, res) {
-    models.Post.destroy({
+    models.Contacts.destroy({
       where: {
-        slug: req.params.slug,
+        contactFirstName: req.params.contactFirstName,
       },
-      include: [{
-        model: models.User,
-        where: {
-          username: req.params.username,
-        },
-      }],
-    }).then(() => {
-      res.redirect('/posts');
+    }).then((allContacts) => {
+      res.redirect('/contacts');
     });
   },
 };

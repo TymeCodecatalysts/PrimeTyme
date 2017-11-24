@@ -1,13 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
   const Post = sequelize.define('post', {
-    // slug: {
-    //   type: DataTypes.STRING,
-    //   unique: 'compositeIndex',
-    //   allowNull: false,
-    //   validate: {
-    //     notEmpty: true,
-    //   },
-    // },
     title: {
       type: DataTypes.STRING,
       unique: 'compositeIndex',

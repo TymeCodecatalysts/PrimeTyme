@@ -1,11 +1,10 @@
-<header class="intro-header" style="background-image: url('/img/contact-bg.jpg')">
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <div class="page-heading">
-          <h1>New Contact</h1>
+        <div class="site-heading">
+          <h1>Contacts</h1>
           <hr class="small">
-          <span class="subheading">Something...</span>
         </div>
       </div>
     </div>
@@ -14,37 +13,28 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-      <form name="contacts" action="/contacts" method="post">
-
-        <div class="row control-group">
-          <div class="form-group col-xs-12 floating-label-form-group controls">
-            <label>Contact's First Name</label>
-            <input type="text" class="form-control" placeholder="Contact's First Name" name="contactFirstName" required data-validation-required-message="Please enter your contact's first name.">
-            <p class="help-block text-danger"></p>
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        {{#if cur_user}}
+        {{#each allContacts}}
+          <div class="post-preview">
+            <a href="contacts/{{this.contactFirstName}}">
+              <h2 class="post-title">
+                {{this.contactFirstName}} {{this.contactLastName}}
+              </h2>
+            </a>
+            <a href="contacts/{{this.contactFirstName}}/edit">
+              <button type="submit" class="btn btn-default">Edit</button>
+            </a>
+            <form name="delete-contact" method="POST" action="/contacts/{{this.contactFirstName}}?_method=DELETE">
+              <button type="submit" class="btn btn-default">Delete</button>
+            </form>
           </div>
+          <hr>
+        {{/each}}
+        <div class="create-contact">
+          <a class="btn btn-default" href="/contacts/new">Create Contact</a>
         </div>
-        <div class="row control-group">
-          <div class="form-group col-xs-12 floating-label-form-group controls">
-            <label>Contact's Last Name</label>
-            <input type="text" class="form-control" placeholder="Contact's Last Name" name="contactLastName" required data-validation-required-message="Please enter your contact's last name.">
-            <p class="help-block text-danger"></p>
-          </div>
-        </div>
-        <div class="row control-group">
-          <div class="form-group col-xs-12 floating-label-form-group controls">
-            <label>Contact's Phone Number</label>
-            <input type="tel" class="form-control" placeholder="Contact's Phone Number" name="contactNumber" required data-validation-required-message="Please enter your contact's phone number.">
-            <p class="help-block text-danger"></p>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="form-group col-xs-12">
-              <button type="submit" class="btn btn-default">Send</button>
-          </div>
-        </div>
-      </form>
-    </div>
+        {{/if}}
+      </div>
   </div>
 </div>
