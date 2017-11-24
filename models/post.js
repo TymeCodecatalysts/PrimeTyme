@@ -21,8 +21,9 @@ module.exports = (sequelize, DataTypes) => {
 
   Post.associate = (models) => {
     models.Post.belongsTo(models.User);
-    models.Post.belongsToMany(models.Contacts, {through: 'contacts_and_messages'});
-
+    models.Post.belongsTo(models.Contacts);
+    // models.Post.belongsToMany(models.Contacts, {through: 'contacts_and_messages'});
+    // models.Post.belongsTo(models.Contacts);
   }
 
   return Post;

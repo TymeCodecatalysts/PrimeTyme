@@ -8,9 +8,9 @@ module.exports = {
 
     router.get('/', Redirect.ifNotLoggedIn('/login'), this.index); // checked
     router.get('/new', Redirect.ifNotLoggedIn('/login'), this.new); // checked
-    router.get('/:contactFirstName', Redirect.ifNotLoggedIn('/login'), this.newMsg);
+    router.get('/:contactFirstName', Redirect.ifNotLoggedIn('/login'), this.newMsg); // checked
     router.post('/', Redirect.ifNotLoggedIn('/login'), this.submit); // checked
-    // router.post('/:contactFirstName', Redirect.ifNotLoggedIn('/login'), this.createMsg); // this will take you to chats
+    router.post('/:contactFirstName', Redirect.ifNotLoggedIn('/login'), this.createMsg); // this will take you to create chats // checked 
     router.get('/:contactFirstName/edit', Redirect.ifNotLoggedIn('/login'), this.edit); // checked
     router.put('/:contactFirstName', Redirect.ifNotLoggedIn('/login'), this.update); // checked
     router.delete('/:contactFirstName', Redirect.ifNotLoggedIn('/login'), this.delete); // checked
@@ -24,6 +24,7 @@ module.exports = {
       }
     }).then((allContacts) => {
       res.render('contacts', {allContacts});
+      
     })
   },
   new(req, res) {
@@ -41,24 +42,34 @@ module.exports = {
     });
   },
   newMsg(req, res) {
-    res.render('posts/new');
-    // models.Contacts.findAll({
-    //   where: {
-    //     userId: req.user.id
-    //   }
-    // }).then((allContacts) => {
-    //   res.render('contacts/newMsg', {allContacts});
-    // })
+    models.Contacts.findOne({
+      where: {
+        userId: req.user.id,
+        contactFirstName: req.params.contactFirstName,
+      }
+    }).then((contact) => {
+      res.render('posts/new', {contact});
+    })
   },
-  // createMsg(req, res) {
-  //   models.Contacts.findOne({
-  //     where: {
-  //       contactFirstName: req.params.contactFirstName,
-  //     }
-  //   }).then((contact) => {
-  //     (contact ? res.render('contacts/single', {contact}) : res.redirect('/contacts'))
-  //   });
-  // },
+  createMsg(req, res) {
+    models.Contacts.findOne({
+      where: {
+        userId: req.user.id,
+        contactFirstName: req.params.contactFirstName
+      }
+    }).then((contact) => {
+      models.Post.create({
+        userId: req.user.id,
+        ContactId: contact.id,
+        title: req.body.title,
+        body: req.body.body,
+        dateToSend: req.body.date,
+        timeToSend: req.body.time
+      })
+    }).then(() => {
+      res.redirect('/posts')
+    })
+  },
   edit(req, res) {
     models.Contacts.findOne({
       where: {

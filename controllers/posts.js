@@ -30,10 +30,10 @@ module.exports = {
   },
   index(req, res) {
     models.Post.findAll({
-      // where: {
-      //   userId: req.user.id
-      // }
-      }).then((allPosts) => {
+      include: [
+        {model: models.User}, {model: models.Contacts}
+      ]
+    }).then((allPosts) => {
       //res.render('posts', { allPosts });
      res.json(allPosts);
     });

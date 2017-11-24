@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         <div class="page-heading">
-          <h1>Create A New Post</h1>
+          <h1>Create A New Message</h1>
           <hr class="small">
         </div>
       </div>
@@ -14,7 +14,7 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-      <form name="create-post" action="/posts" method="post">
+      <form name="create-post" action="/contacts/{{contact.contactFirstName}}" method="post">
         <div class="row control-group">
           <div class="form-group col-xs-12 floating-label-form-group controls">
             <label>Title</label>
