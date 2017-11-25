@@ -6,9 +6,9 @@ module.exports = {
   registerRouter() {
     const router = express.Router();
 
-    router.get('/', this.index); // we might not want this in the future, checked
+    router.get('/', this.index); 
     router.get('/new', Redirect.ifNotLoggedIn('/login'), this.new); // checked
-    router.post('/', Redirect.ifNotLoggedIn('/login'), this.create); // checked
+    // router.post('/', Redirect.ifNotLoggedIn('/login'), this.create); // this shouldn't be here
     router.get('/:username/:title', this.show); // checked
     router.get('/:username/:title/edit',
       Redirect.ifNotLoggedIn('/login'),
@@ -29,13 +29,12 @@ module.exports = {
     return router;
   },
   index(req, res) {
+    console.log(req.user)
     models.Post.findAll({
-      include: [
-        {model: models.User}, {model: models.Contacts}
-      ]
+
     }).then((allPosts) => {
-      //res.render('posts', { allPosts });
-     res.json(allPosts);
+      res.render('posts', { allPosts });
+     //res.json(allPosts);
     });
   },
   new(req, res) {
