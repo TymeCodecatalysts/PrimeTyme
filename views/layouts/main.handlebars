@@ -31,13 +31,12 @@
             <ul class="right hide-on-med-and-down">
               <li><a href="/">HOME</a></li>
               {{#if cur_user}}
-              <li><a href="/users">USERS</a></li>
-              <li><a href="/posts">POSTS</a></li>
-
+              <li><a href="/contacts">CONTACTS</a></li>
+              <li><a href="/posts">MESSAGES</a></li>
               <li id="logout"><a href="#">LOGOUT</a></li>
               {{else}}
-                <li><a href="/login">Login</a></li>
-                <li><a href="/sign-up">Sign up</a></li>
+                <li><a href="/login">LOGIN</a></li>
+                <li><a href="/sign-up">SIGN UP</a></li>
               {{/if}}
 
             </ul>
@@ -45,9 +44,9 @@
         </div>
         {{#if cur_user}}
         <ul class="side-nav" id="mobile-demo">
-          <li><a href="https://google.com">HOME</a></li>
-          <li><a href="/users">USERS</a></li>
-          <li><a href="/posts">POSTS</a></li>
+          <li><a href="/">HOME</a></li>
+          <li><a href="/contacts">CONTACTS</a></li>
+          <li><a href="/posts">MESSAGES</a></li>
           <li><a href="#">LOGOUT</a></li>
         </ul>
         {{/if}}
