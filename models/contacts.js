@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
 			}
 		},
 		contactNumber: {
-			type: DataTypes.INTEGER,
+			type: DataTypes.STRING,
 			unique: true,
 			allowNull: false,
 			validate: {
@@ -26,8 +26,6 @@ module.exports = (sequelize, DataTypes) => {
 
 	Contacts.associate = function(models) {
 		models.Contacts.belongsTo(models.User);
-		//models.Contacts.belongsToMany(models.Post, {through: 'contacts_and_messages'});
-		// models.Contacts.h(models.Post);
 		models.Contacts.hasMany(models.Post);
 	};
 	return Contacts;

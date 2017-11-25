@@ -8,7 +8,6 @@ module.exports = {
 
     router.get('/', this.index); 
     router.get('/new', Redirect.ifNotLoggedIn('/login'), this.new); // checked
-    // router.post('/', Redirect.ifNotLoggedIn('/login'), this.create); // this shouldn't be here
     router.get('/:username/:title', this.show); // checked
     router.get('/:username/:title/edit',
       Redirect.ifNotLoggedIn('/login'),
@@ -33,39 +32,12 @@ module.exports = {
     models.Post.findAll({
 
     }).then((allPosts) => {
-      //res.render('posts', { allPosts });
-     res.json(allPosts);
+      res.render('posts', { allPosts });
+     //res.json(allPosts);
     });
   },
   new(req, res) {
     res.render('posts/new');
-  },
-  create(req, res) {
-    // using the association
-    req.user.createPost({
-      title: req.body.title,
-      body: req.body.body,
-      dateToSend: req.body.date,
-      timeToSend: req.body.time,
-    }).then((post) => {
-      res.redirect(`/posts/${req.user.username}/${post.title}`);
-    }).catch(() => {
-      res.render('posts/new');
-    });
-
-    // Without the sequelize association
-    /*
-    models.Post.create({
-      userId: req.user.id,
-      slug: getSlug(req.body.title.toLowerCase()),
-      title: req.body.title.toLowerCase(),
-      body: req.body.body,
-    }).then((post) => {
-      res.redirect(`/posts/${req.user.username}/${post.slug}`);
-    }).catch(() => {
-      res.render('posts/new');
-    });
-    */
   },
   show(req, res) {
     // using the association

@@ -1,6 +1,22 @@
 const express = require('express');
 const models = require('../models');
 const Redirect = require('../middlewares/redirect');
+const cron = require('node-cron');
+
+function delayMessage(number, message) {
+  const accountSid = 'AC65bdbdfbf0837bccd4962a2293745ceb';
+  const authToken = '47d2cd5dc2994c6824db3ea677586b5d';
+  const client = require('twilio')(accountSid, authToken);
+  cron.schedule('5 * * * * *', function() {
+   client.messages
+   .create({
+     to: number,
+     from: '+12012926280',
+     body: message,
+   })
+   .then((message) => console.log(message.sid));
+  });
+}
 
 module.exports = {
   registerRouter() {
@@ -51,6 +67,9 @@ module.exports = {
       res.render('posts/new', {contact});
     })
   },
+  
+
+
   createMsg(req, res) {
     models.Contacts.findOne({
       where: {
@@ -58,6 +77,7 @@ module.exports = {
         contactFirstName: req.params.contactFirstName
       }
     }).then((contact) => {
+      // delayMessage(contact.contactNumber, req.body.body);
       models.Post.create({
         userId: req.user.id,
         ContactId: contact.id,
