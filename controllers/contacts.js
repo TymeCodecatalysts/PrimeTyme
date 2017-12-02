@@ -39,7 +39,7 @@ module.exports = {
         userId: req.user.id
       }
     }).then((allContacts) => {
-      res.render('contacts', {allContacts});
+      res.render('posts', {allContacts});
       
     })
   },
@@ -54,7 +54,7 @@ module.exports = {
       contactNumber: req.body.contactNumber
     })
     .then((allContacts) => {
-      res.redirect('contacts');
+      res.redirect('/posts');
     });
   },
   newMsg(req, res) {
@@ -96,7 +96,7 @@ module.exports = {
         contactFirstName: req.params.contactFirstName,
       },
     }).then((contact) =>
-      (contact ? res.render('contacts/edit', { contact }) : res.redirect('/contacts'))
+      (contact ? res.render('contacts/edit', { contact }) : res.redirect('/posts'))
     );
   },
   update(req, res) {
@@ -110,7 +110,7 @@ module.exports = {
         contactFirstName: req.params.contactFirstName,
       },
     }).then(() => {
-      res.redirect('/contacts');
+      res.redirect('/posts');
     });
   },
   delete(req, res) {
@@ -119,7 +119,7 @@ module.exports = {
         contactFirstName: req.params.contactFirstName,
       },
     }).then((allContacts) => {
-      res.redirect('/contacts');
+      res.redirect('/posts');
     });
   },
 };

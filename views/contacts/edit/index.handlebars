@@ -1,47 +1,50 @@
-<header class="intro-header" style="background-image: url('/img/contact-bg.jpg')">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <div class="page-heading">
-          <h1>Edit A Contact</h1>
-          <hr class="small">
+<div class="page-wrapper">
+    <div class="container-fluid">
+        <div class="row page-titles">
+            <div class="col-md-5 col-8 align-self-center">
+                <h3 class="text-themecolor m-b-0 m-t-0">Edit a Contact</h3>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                    <li class="breadcrumb-item active">Edit a Contact</li>
+                </ol>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-</header>
-
-<div class="container">
-  <div class="row">
-    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-      <form name="edit-contact" method="POST" action="/contacts/{{contact.contactFirstName}}?_method=PUT">
-        <div class="row control-group">
-          <div class="form-group col-xs-12 floating-label-form-group controls">
-            <label>Contact's First Name</label>
-            <input type="text" class="form-control" name="contactFirstName" value="{{contact.contactFirstName}}" required data-validation-required-message="Please enter your contact's first name.">
-            <p class="help-block text-danger"></p>
-          </div>
-        </div>
-        <div class="row control-group">
-          <div class="form-group col-xs-12 floating-label-form-group controls">
-            <label>Contact's Last Name</label>
-            <input type="text" class="form-control" name="contactLastName" value="{{contact.contactLastName}}" required data-validation-required-message="Please enter your contact's last name.">
-            <p class="help-block text-danger"></p>
-          </div>
-        </div>
-        <div class="row control-group">
-          <div class="form-group col-xs-12 floating-label-form-group controls">
-            <label>Contact's Phone Number</label>
-            <input type="tel" class="form-control" name="contactNumber" value="{{contact.contactNumber}}" required data-validation-required-message="Please enter your contact's phone number.">
-            <p class="help-block text-danger"></p>
-          </div>
-        </div>
-        <br>
         <div class="row">
-          <div class="form-group col-xs-6 text-right">
-              <button type="submit" class="btn btn-default">Save</button>
-          </div>
-      </form>
+            <div class="col-lg-12 col-xlg-12 col-md-12">
+                <div class="card">
+                    <div class="card-block">
+                        <form name="edit-contact" action="/contacts/{{contact.contactFirstName}}?_method=PUT" method="post" class="form-horizontal form-material">
+                            <div class="form-group">
+                                <label class="col-md-12">Contact's First Name</label>
+                                <div class="col-md-12">
+                                    <input type="text" name="contactFirstName" value="{{contact.contactFirstName}}" class="form-control form-control-line" required data-validation-required-message="Please enter your contact's first name.">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">Contact's Last Name</label>
+                                <div class="col-md-12">
+                                    <input type="text" name="contactLastName" value="{{contact.contactLastName}}" class="form-control form-control-line" required data-validation-required-message="Please enter your contact's last name.">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">Contact's Phone Name</label>
+                                <div class="col-md-12">
+                                    <input type="tel" name="contactNumber" value="{{contact.contactNumber}}" class="form-control form-control-line" required data-validation-required-message="Please enter your contact's phone number.">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <button type="submit" class="btn btn-default">Save changes</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
+
