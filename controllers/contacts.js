@@ -13,7 +13,7 @@ function delayMessage(number, message, cronParams) {
   const accountSid = 'AC65bdbdfbf0837bccd4962a2293745ceb';
   const authToken = '47d2cd5dc2994c6824db3ea677586b5d';
   const client = require('twilio')(accountSid, authToken);
-  //cron.schedule('55 17 28 11 2', function() {
+  // cron.schedule('55 17 28 11 2', function() {
   cron.schedule(cronParams, function() {
    client.messages
    .create({
@@ -37,12 +37,29 @@ function parseDate(dateToSend, timeToSend) {
 
   const year = dateToSend.slice(0,4);
   const month = dateToSend.slice(5,7);
-  const date = dateToSend.slice(-2);
+  var date;
+  if (parseInt(dateToSend.slice(-2)) < 10) {
+    date = dateToSend.slice(-2).charAt(1);
+  }
+  else {
+    date = dateToSend.slice(-2);
+  }
+  var hour;
+  if (parseInt(timeToSend.slice(-2)) < 10) {
+    hour = timeToSend.slice(0, 2).charAt(1);
+  }
+  else {
+    hour = timeToSend.slice(0, 2);
+  }
+  var min;
+  if (parseInt(timeToSend.slice(-2)) < 10) {
+    min = timeToSend.slice(-2).charAt(1);
+  }
+  else {
+    min = timeToSend.slice(-2);
+  }
 
-  const hour = timeToSend.slice(0,2);
-  const min = timeToSend.slice(-2);
-
-  const dayOfWeek = "Friday";
+  const dayOfWeek = 5;
 
   // push values into array in cron format
   arr.push(min);
@@ -131,9 +148,11 @@ module.exports = {
 
       var cronVals = parseDate(req.body.date, req.body.time)
       cronVals = cronVals.slice(0, cronVals.length - 1).join(' ');
-
+      console.log("-----------------------------------------------------------------");
       console.log(cronVals);
-      delayMessage(console.contactNumber, req.body.body, cronVals);
+      console.log("-----------------------------------------------------------------");
+
+      delayMessage(contact.contactNumber, req.body.body, cronVals);
 
     }).then(() => {
       res.redirect('/posts')
