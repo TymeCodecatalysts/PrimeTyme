@@ -37,28 +37,9 @@ function parseDate(dateToSend, timeToSend) {
 
   const year = dateToSend.slice(0,4);
   const month = dateToSend.slice(5,7);
-  var date;
-  if (parseInt(dateToSend.slice(-2)) < 10) {
-    date = dateToSend.slice(-2).charAt(1);
-  }
-  else {
-    date = dateToSend.slice(-2);
-  }
-  var hour;
-  if (parseInt(timeToSend.slice(-2)) < 10) {
-    hour = timeToSend.slice(0, 2).charAt(1);
-  }
-  else {
-    hour = timeToSend.slice(0, 2);
-  }
-  var min;
-  if (parseInt(timeToSend.slice(-2)) < 10) {
-    min = timeToSend.slice(-2).charAt(1);
-  }
-  else {
-    min = timeToSend.slice(-2);
-  }
-
+  const date = dateToSend.slice(-2);
+  const hour = timeToSend.slice(0, 2);
+  const min = timeToSend.slice(-2);
   const dayOfWeek = 5;
 
   // push values into array in cron format
