@@ -1,3 +1,7 @@
+.inline {
+  display: inline;
+}
+
 body {
   background-color: #555;
 }
@@ -39,7 +43,6 @@ video {
 
 body {
   background: #333;
-  color: white;
 }
 
 .video-container:after {

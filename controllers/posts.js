@@ -6,7 +6,7 @@ module.exports = {
   registerRouter() {
     const router = express.Router();
 
-    router.get('/', this.index); 
+    router.get('/', Redirect.ifNotLoggedIn('/login'), this.index); 
     router.get('/new', Redirect.ifNotLoggedIn('/login'), this.new); // checked
     router.get('/:username/:title', this.show); // checked
     router.get('/:username/:title/edit',
@@ -32,9 +32,15 @@ module.exports = {
     models.Post.findAll({
 
     }).then((allPosts) => {
-      res.render('posts', { allPosts });
-      //res.json(allPosts);
-    });
+      models.Contacts.findAll({
+        where: {
+          userId: req.user.id
+        }
+      }).then((allContacts) => {
+        res.render('posts', {allPosts, allContacts});
+        //res.json(allPosts)
+      })
+    })
   },
   new(req, res) {
     res.render('posts/new');
