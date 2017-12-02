@@ -4,10 +4,6 @@ const Redirect = require('../middlewares/redirect');
 const cron = require('node-cron');
 const moment  = require('moment')
 
-const now = moment(); // current date and time
-
-
-
 // pass array with cron parameters
 function delayMessage(number, message, cronParams) {
   const accountSid = 'AC65bdbdfbf0837bccd4962a2293745ceb';
@@ -40,7 +36,9 @@ function parseDate(dateToSend, timeToSend) {
   const date = dateToSend.slice(-2);
   const hour = timeToSend.slice(0, 2);
   const min = timeToSend.slice(-2);
-  const dayOfWeek = 5;
+
+  const dateMoment = moment(dateToSend);
+  const dayOfWeek = dateMoment.day();
 
   // push values into array in cron format
   arr.push(min);
@@ -76,10 +74,7 @@ module.exports = {
         userId: req.user.id
       }
     }).then((allContacts) => {
-      res.render('contacts', {allContacts});
-      console.log("\n\n_ - - - - - - - - - - _\n\n")
-      console.log(now)
-      
+      res.render('contacts', {allContacts});      
     })
   },
   new(req, res) {

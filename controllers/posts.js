@@ -32,8 +32,8 @@ module.exports = {
     models.Post.findAll({
 
     }).then((allPosts) => {
-      //res.render('posts', { allPosts });
-      res.json(allPosts);
+      res.render('posts', { allPosts });
+      //res.json(allPosts);
     });
   },
   new(req, res) {
