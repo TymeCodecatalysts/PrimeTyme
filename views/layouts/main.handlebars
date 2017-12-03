@@ -54,7 +54,7 @@
     </div>
 
     <div id="main-wrapper">
-
+        {{#if cur_user}}
         <header class="topbar">
             <nav class="navbar top-navbar navbar-toggleable-sm navbar-light">
                 <div class="navbar-header">
@@ -75,12 +75,13 @@
                 </div>
             </nav>
         </header>
+        {{/if}}
         {{#if cur_user}}
         <aside class="left-sidebar">
             <div class="scroll-sidebar">
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
-                        <li> <a class="waves-effect waves-dark" href="index.html" aria-expanded="false"><i class="mdi mdi-gauge"></i><span class="hide-menu">Dashboard</span></a>
+                        <li> <a class="waves-effect waves-dark" href="/posts" aria-expanded="false"><i class="mdi mdi-gauge"></i><span class="hide-menu">Dashboard</span></a>
                         </li>
                         <li> <a class="waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-message-reply-text"></i><span class="hide-menu">Edgardo, Dwayne, Aryan</span></a>
                         </li>
@@ -127,7 +128,7 @@
           <li><a href="/">HOME</a></li>
           <li><a href="/contacts">CONTACTS</a></li>
           <li><a href="/posts">MESSAGES</a></li>
-          <li><a href="#">LOGOUT</a></li>
+          <li id="logout"><a href="#">LOGOUT</a></li>
         </ul>
         {{/if}}
       </div>

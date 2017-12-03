@@ -2,12 +2,15 @@ const express = require('express');
 const models = require('../models');
 const Redirect = require('../middlewares/redirect');
 const cron = require('node-cron');
+const moment  = require('moment')
 
-function delayMessage(number, message) {
+// pass array with cron parameters
+function delayMessage(number, message, cronParams) {
   const accountSid = 'AC65bdbdfbf0837bccd4962a2293745ceb';
   const authToken = '47d2cd5dc2994c6824db3ea677586b5d';
   const client = require('twilio')(accountSid, authToken);
-  cron.schedule('5 * * * * *', function() {
+  // cron.schedule('55 17 28 11 2', function() {
+  cron.schedule(cronParams, function() {
    client.messages
    .create({
      to: number,
@@ -17,6 +20,47 @@ function delayMessage(number, message) {
    .then((message) => console.log(message.sid));
   });
 }
+
+// convert date parameter to acceptable cron format
+// min hour date month dayOfWeek
+// add a parameter to store the day of the week to send
+// needs to be added to mondel and rendered on the views
+// accepts the day of week as a string i.e Monday
+// display a drop down with a list of the days so that
+// we don't have to worry if the user spells it wrong
+function parseDate(dateToSend, timeToSend) {
+  var arr = [];
+
+  const year = dateToSend.slice(0,4);
+  const month = dateToSend.slice(5,7);
+  var date = dateToSend.slice(-2);
+  if (date < 10) {
+    date = date[1];
+  }
+  var hour = timeToSend.slice(0, 2);
+  if (hour < 10) {
+    hour = hour[1];
+  }
+  var min = timeToSend.slice(-2);
+  if (min < 10) {
+    min = min[1];
+  }
+
+  const dateMoment = moment(dateToSend);
+  const dayOfWeek = dateMoment.day();
+
+  // push values into array in cron format
+  arr.push(min);
+  arr.push(hour);
+  arr.push(date);
+  arr.push(month);
+  arr.push(dayOfWeek);
+  arr.push(year);
+  
+  // function returns an array of cron parameters [min, hour, date, month, dayOfWeek]
+  return arr;
+}
+
 
 module.exports = {
   registerRouter() {
@@ -39,8 +83,7 @@ module.exports = {
         userId: req.user.id
       }
     }).then((allContacts) => {
-      res.render('posts', {allContacts});
-      
+      res.render('contacts', {allContacts});      
     })
   },
   new(req, res) {
@@ -69,7 +112,6 @@ module.exports = {
   },
   
 
-
   createMsg(req, res) {
     models.Contacts.findOne({
       where: {
@@ -86,6 +128,17 @@ module.exports = {
         dateToSend: req.body.date,
         timeToSend: req.body.time
       })
+
+      console.log(parseDate(req.body.date, req.body.time))
+
+      var cronVals = parseDate(req.body.date, req.body.time)
+      cronVals = cronVals.slice(0, cronVals.length - 1).join(' ');
+      console.log("-----------------------------------------------------------------");
+      console.log(cronVals);
+      console.log("-----------------------------------------------------------------");
+
+      delayMessage(contact.contactNumber, req.body.body, cronVals);
+
     }).then(() => {
       res.redirect('/posts')
     })

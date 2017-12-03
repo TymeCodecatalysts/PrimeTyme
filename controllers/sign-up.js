@@ -1,11 +1,12 @@
 const express = require('express');
 const models = require('../models');
+const Redirect = require('../middlewares/redirect');
 
 module.exports = {
   registerRouter() {
     const router = express.Router();
 
-    router.get('/', this.index); // checked 
+    router.get('/', Redirect.ifLoggedIn('/posts'), this.index); // checked 
     router.post('/', this.submit); // checked
 
     return router;
@@ -22,7 +23,7 @@ module.exports = {
       password: req.body.password,
     }).then((user) => {
       req.login(user, () =>
-        res.redirect('/profile')
+        res.redirect('/posts')
       );
     }).catch(() => {
       res.render('sign-up');
