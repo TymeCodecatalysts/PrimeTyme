@@ -33,9 +33,18 @@ function parseDate(dateToSend, timeToSend) {
 
   const year = dateToSend.slice(0,4);
   const month = dateToSend.slice(5,7);
-  const date = dateToSend.slice(-2);
-  const hour = timeToSend.slice(0, 2);
-  const min = timeToSend.slice(-2);
+  var date = dateToSend.slice(-2);
+  if (date < 10) {
+    date = date[1];
+  }
+  var hour = timeToSend.slice(0, 2);
+  if (hour < 10) {
+    hour = hour[1];
+  }
+  var min = timeToSend.slice(-2);
+  if (min < 10) {
+    min = min[1];
+  }
 
   const dateMoment = moment(dateToSend);
   const dayOfWeek = dateMoment.day();
