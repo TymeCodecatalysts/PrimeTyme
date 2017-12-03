@@ -6,7 +6,7 @@ module.exports = {
   registerRouter() {
     const router = express.Router();
 
-    router.get('/', Redirect.ifLoggedIn('/profile'), this.index); // checked
+    router.get('/', Redirect.ifLoggedIn('/posts'), this.index); // checked
     router.post('/', this.login); // checked
 
     return router;
