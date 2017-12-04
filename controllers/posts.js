@@ -30,7 +30,9 @@ module.exports = {
   index(req, res) {
     console.log(req.user)
     models.Post.findAll({
-
+      where: {
+        userId: req.user.id
+      }
     }).then((allPosts) => {
       models.Contacts.findAll({
         where: {
