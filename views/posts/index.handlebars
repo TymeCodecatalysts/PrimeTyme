@@ -26,6 +26,7 @@
                                     <div class="user-img"> <img src="/material-lite/assets/images/users/1.jpg" alt="user" class="img-circle"> <span class="profile-status online pull-right"></span> </div>
                                     <div class="mail-contnet">
                                         <h5>{{this.contactFirstName}} {{this.contactLastName}}</h5> <span class="mail-desc">{{this.contactNumber}}</span></div>
+                                        <br>
                                     <form name="edit-contact" method="GET" action="contacts/{{this.contactFirstName}}/edit" class="inline">
                                         <button type="submit" class="btn btn-success waves-effect waves-dark">Edit</button>
                                     </form>
@@ -61,6 +62,13 @@
                                             <div><h3>{{this.title}}</h3> <span class="sl-date">To be sent: 12/05/2017 at {{this.timeToSend}}</span>
                                                 <p class="m-t-10"> {{this.body}}</p>
                                             </div>
+                                            <form name="edit-contact" method="GET" action="posts/{{this.title}}/edit" class="inline">
+                                                <button type="submit" class="btn btn-success waves-effect waves-dark">Edit</button>
+                                            </form>
+                                            <form name="delete-contact" method="POST" action="/posts/{{this.title}}?_method=DELETE" class="inline">
+                                      <button type="submit" class="btn btn-success waves-effect waves-dark">Delete</button>
+                                    </form>
+
                                         </div>
                                     </div>
                                     <hr>
