@@ -8,22 +8,9 @@ module.exports = {
 
     router.get('/', Redirect.ifNotLoggedIn('/login'), this.index); 
     router.get('/new', Redirect.ifNotLoggedIn('/login'), this.new); // checked
-    router.get('/:username/:title', this.show); // checked
-    router.get('/:username/:title/edit',
-      Redirect.ifNotLoggedIn('/login'),
-      Redirect.ifNotAuthorized('/posts'),
-      this.edit
-    );
-    router.put('/:username/:title',
-      Redirect.ifNotLoggedIn('/login'),
-      Redirect.ifNotAuthorized('/posts'),
-      this.update
-    );
-    router.delete('/:username/:title',
-      Redirect.ifNotLoggedIn('/login'),
-      Redirect.ifNotAuthorized('/posts'),
-      this.delete
-    );
+    router.get('/:title/edit', this.edit);
+    router.put('/:title', Redirect.ifNotLoggedIn('/login'), Redirect.ifNotAuthorized('/posts'), this.update);
+    router.delete('/:title', Redirect.ifNotLoggedIn('/login'), this.delete);
 
     return router;
   },
@@ -45,52 +32,22 @@ module.exports = {
   new(req, res) {
     res.render('posts/new');
   },
-  show(req, res) {
-    // using the association
-    models.Post.findOne({
-      where: {
-        title: req.params.title,
-      },
-      include: [{
-        model: models.User,
-        where: {
-          username: req.params.username,
-        },
-      }],
-    }).then((post) => {
-      (post ? res.render('posts/single', { post, user: post.user }) : res.redirect('/posts'))
-    });
-
-    // without the sequelize association (explicit queries)
-    // models.User.findOne({
-    //   where: {
-    //     username: req.params.username,
-    //   }
-    // }).then((user) => {
-    //   models.Post.findOne({
-    //     where: {
-    //       userId: user.id,
-    //       slug: req.params.slug,
-    //     }
-    //   }).then((post) =>
-    //     (post ? res.render('posts/single', { post, user }) : res.redirect('/posts'))
-    //   );
-    // });
-  },
   edit(req, res) {
     models.Post.findOne({
       where: {
         title: req.params.title,
       },
-      include: [{
-        model: models.User,
-        where: {
-          username: req.params.username,
-        },
-      }],
-    }).then((post) =>
-      (post ? res.render('posts/edit', { post }) : res.redirect('/posts'))
-    );
+      // include: [{
+      //   model: models.User,
+      //   where: {
+      //     username: req.params.username,
+      //   },
+      // }],
+    }).then((posts) => {
+      (posts ? res.render('posts/edit', { posts }) : res.redirect('/posts'))
+      //console.log("\n\n #############################\n\n");
+      //res.json(posts)
+    });
   },
   update(req, res) {
     models.Post.update({
@@ -120,14 +77,23 @@ module.exports = {
       where: {
         title: req.params.title,
       },
-      include: [{
-        model: models.User,
-        where: {
-          username: req.params.username,
-        },
-      }],
-    }).then(() => {
+    }).then((allPosts) => {
       res.redirect('/posts');
     });
   },
+  // delete(req, res) {
+  //   models.Post.destroy({
+  //     where: {
+  //       title: req.params.title,
+  //     },
+  //     include: [{
+  //       model: models.User,
+  //       where: {
+  //         username: req.params.username,
+  //       },
+  //     }],
+  //   }).then(() => {
+  //     res.redirect('/posts');
+  //   });
+  // },
 };
