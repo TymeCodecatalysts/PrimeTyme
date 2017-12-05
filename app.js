@@ -8,6 +8,9 @@ const methodOverride = require('method-override');
 const models = require('./models/');
 const passport = require('./middlewares/authentication');
 const viewHelpers = require('./middlewares/viewHelpers')
+const Handlebars = require("handlebars");
+const MomentHandler = require("handlebars.moment");
+MomentHandler.registerHelpers(Handlebars);
 
 const app = express();
 app.use(methodOverride('_method'));

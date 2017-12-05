@@ -18,6 +18,8 @@
     "express": "4.16.1",
     "express-handlebars": "3.0.0",
     "express-session": "1.15.6",
+    "handlebars-helpers": "^0.10.0",
+    "handlebars.moment": "^1.0.4",
     "materialize-css": "^0.100.2",
     "method-override": "2.3.10",
     "minimatch": "3.0.4",
