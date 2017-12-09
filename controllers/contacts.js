@@ -102,24 +102,44 @@ module.exports = {
     }).then((contact) => {
       // Contact does not exist
       //console.log("REQ.USER" + req.user);
+      var idContact;
       if (!contact) {
         models.Contacts.create({
           userId: 1,
           contactFirstName: 'Unknown',
           contactLastName: 'Unknown',
           contactNumber: msgFrom
-        })
+        });
+        idContact = contact.id;
       }
-      console.log(moment())
-      // models.Post.create({                     // New contact is generated when a msg is sent. But the msg is not yet created
-      //   ContactId: contact.id,
-      //   title: msgBody,
-      //   body: msgBody,
-      //   dateToSend: moment().startOf('day'),
-      //   timeToSend: moment().format("hh:mm:ss")
-      // })
-    // }).then(() => {
-    //   res.redirect('/posts');
+      const now = moment();
+      // const hour = now.hour();
+      // const minute = now.minute();
+      // const second = now.second();
+      // const time = [];
+      // time.push(hour);
+
+      // time.push(minute);
+
+      // time.push(second);
+      // const timeVal = time.slice(0, time.length).join(':');
+
+      // console.log("timeval" + timeVal);
+
+      console.log(now);
+      console.log(now.format("HH:mm:ss"));
+      console.log(now.startOf('day'))
+
+      models.Post.create({                     // New contact is generated when a msg is sent. But the msg is not yet created
+        userId: 1,
+        ContactId: idContact,
+        title: msgBody,
+        body: msgBody,
+        timeToSend: now.format("HH:mm:ss"),
+        dateToSend: now.startOf('day')
+        
+      })
+
     })
     // models.Contacts.findOne({
     //   where: {
@@ -139,7 +159,7 @@ module.exports = {
         userId: req.user.id
       }
     }).then((allContacts) => {
-      res.json({allContacts});      
+      res.json(allContacts);      
     })
   },
   new(req, res) {
