@@ -26,8 +26,8 @@ module.exports = {
           userId: req.user.id
         }
       }).then((allContacts) => {
-        res.render('posts', {allPosts, allContacts});
-        //res.json(allPosts)
+        //res.render('posts', {allPosts, allContacts});
+        res.json(allPosts)
       })
     })
   },

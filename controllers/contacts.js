@@ -2,8 +2,8 @@ const express = require('express');
 const models = require('../models');
 const Redirect = require('../middlewares/redirect');
 const cron = require('node-cron');
-const moment  = require('moment')
-
+const moment  = require('moment');
+const Sequelize = require('sequelize');
 // pass array with cron parameters
 function delayMessage(number, message, cronParams) {
   const accountSid = 'AC65bdbdfbf0837bccd4962a2293745ceb';
@@ -65,7 +65,10 @@ function parseDate(dateToSend, timeToSend) {
 module.exports = {
   registerRouter() {
     const router = express.Router();
-
+    // Message can't be received if user authentication is required
+    router.post('/receiveMessage', this.receive); // user has to be logged in in order to receive message. Since
+    // all users use the same number to send/receive messages, for now there is no other way to know who the message should be sent to unless the user logs in
+    // In the future, sending messages with the user's own phone number will allow us to send messages even when the user is not logged in
     router.get('/', Redirect.ifNotLoggedIn('/login'), this.index); // checked
     router.get('/new', Redirect.ifNotLoggedIn('/login'), this.new); // checked
     router.get('/:contactFirstName', Redirect.ifNotLoggedIn('/login'), this.newMsg); // checked
@@ -77,13 +80,66 @@ module.exports = {
 
     return router;
   },
+  receive(req, res){
+    console.log(req.body);
+    const msgFrom = req.body.From;
+    const msgBody = req.body.Body;
+    // After receiving message, we have to check whether the number comes from
+    // one of the contacts. Otherwise, create contact. Then, we have to store
+    // number of database and display message in dashboard. 
+    res.send(`
+    <Response>
+      <Message>
+        Your message has been sent. 
+      </Message>
+    </Response>
+    `);
+    models.Contacts.findOne({
+      where: {
+        contactNumber: msgFrom,
+        userId: 1             // since user is not authenticated to receive a message, let us just modify the first user for demo purposes
+      }
+    }).then((contact) => {
+      // Contact does not exist
+      //console.log("REQ.USER" + req.user);
+      if (!contact) {
+        models.Contacts.create({
+          userId: 1,
+          contactFirstName: 'Unknown',
+          contactLastName: 'Unknown',
+          contactNumber: msgFrom
+        })
+      }
+      console.log(moment())
+      // models.Post.create({                     // New contact is generated when a msg is sent. But the msg is not yet created
+      //   ContactId: contact.id,
+      //   title: msgBody,
+      //   body: msgBody,
+      //   dateToSend: moment().startOf('day'),
+      //   timeToSend: moment().format("hh:mm:ss")
+      // })
+    // }).then(() => {
+    //   res.redirect('/posts');
+    })
+    // models.Contacts.findOne({
+    //   where: {
+    //     userId: req.user.id,
+    //     contactNumber: msgFrom
+    //   }
+    // }).then((contact) => {
+    //   console.log(contact);
+    // })
+    // console.log(msgFrom + " " + msgBody);
+    // confirmation message
+    
+  },
   index(req, res) {
     models.Contacts.findAll({
       where: {
         userId: req.user.id
       }
     }).then((allContacts) => {
-      res.render('contacts', {allContacts});      
+      res.json({allContacts});      
     })
   },
   new(req, res) {
