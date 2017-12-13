@@ -21,8 +21,9 @@
                         <div class="message-box contact-box">
                             <h2 class="add-ct-btn"><a href="/contacts/new"><button type="button" class="btn btn-circle btn-lg btn-success waves-effect waves-dark">+</button></a></h2>
                             <div class="message-widget contact-widget">
+
                                 {{#each allContacts}}
-                                <a href="contacts/{{this.contactFirstName}}">
+                                <a href="">
                                     <div class="user-img"> <img src="/material-lite/assets/images/users/1.jpg" alt="user" class="img-circle"> <span class="profile-status online pull-right"></span> </div>
                                     <div class="mail-contnet">
                                         <h5>{{this.contactFirstName}} {{this.contactLastName}}</h5> <span class="mail-desc">{{this.contactNumber}}</span></div>
@@ -33,6 +34,15 @@
                                     <form name="delete-contact" method="POST" action="/contacts/{{this.contactFirstName}}?_method=DELETE" class="inline">
                                       <button type="submit" class="btn btn-success waves-effect waves-dark">Delete</button>
                                     </form>
+
+                                    <br>
+                                    <br>
+
+                                    <!-- Create a message once this button is pressed -->
+                                    <form name="create-message" method="GET" action="contacts/{{this.contactFirstName}}" class="inline">
+                                      <button type="submit" class="btn btn-success waves-effect waves-dark">Create Message</button>
+                                    </form>
+
                                 </a>
                                 {{/each}}
 

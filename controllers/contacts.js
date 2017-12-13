@@ -75,6 +75,7 @@ module.exports = {
     router.put('/:contactFirstName', Redirect.ifNotLoggedIn('/login'), this.update); // checked
     router.delete('/:contactFirstName', Redirect.ifNotLoggedIn('/login'), this.delete); // checked
 
+
     return router;
   },
   index(req, res) {

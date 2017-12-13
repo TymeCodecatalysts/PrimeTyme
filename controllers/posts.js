@@ -12,18 +12,25 @@ module.exports = {
     router.put('/:title', Redirect.ifNotLoggedIn('/login'), Redirect.ifNotAuthorized('/posts'), this.update);
     router.delete('/:title', Redirect.ifNotLoggedIn('/login'), this.delete);
 
+    router.get('/', Redirect.ifNotLoggedIn('/login'), this.userMsgHistory) // render message history for a specific contact
+
+
     return router;
   },
   index(req, res) {
-    console.log(req.user)
+    //console.log(req.user)
     models.Post.findAll({
       where: {
-        userId: req.user.id
+        userId: req.user.id,
+        ContactId: '7',
+        //ContactId: req.params.ContactId,
+
       }
     }).then((allPosts) => {
+      console.log(allPosts)
       models.Contacts.findAll({
         where: {
-          userId: req.user.id
+          userId: req.user.id,
         }
       }).then((allContacts) => {
         res.render('posts', {allPosts, allContacts});
@@ -31,6 +38,26 @@ module.exports = {
       })
     })
   },
+
+  userMsgHistory(req, res) {
+    //console.log(req.user)
+    models.Post.findAll({
+      where: {
+        userId: req.user.id, // finds the user that is currently logged in
+        ContactId: req.params.ContactId, // displays the messages associated to a specified contact
+      }
+    }).then((allPosts) => {
+      models.Contacts.findAll({
+        where: {
+          userId: req.user.id
+        }
+      }).then((allContacts) => {
+        //res.render('posts', {allPosts, allContacts});
+        res.json(allPosts)
+      })
+    })
+  },
+
   new(req, res) {
     res.render('posts/new');
   },
