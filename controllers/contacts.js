@@ -6,15 +6,16 @@ const moment  = require('moment');
 const Sequelize = require('sequelize');
 // pass array with cron parameters
 function delayMessage(number, message, cronParams) {
-  const accountSid = 'AC65bdbdfbf0837bccd4962a2293745ceb';
-  const authToken = '47d2cd5dc2994c6824db3ea677586b5d';
+  const accountSid = 'AC7ae86fb265ccdf4383e7a98fc2da3704';
+  const authToken = 'df6de5027aebae8b1802d25ca9cf1c8e';
   const client = require('twilio')(accountSid, authToken);
   // cron.schedule('55 17 28 11 2', function() {
   cron.schedule(cronParams, function() {
+    console.log("This is supposed to work");
    client.messages
    .create({
      to: number,
-     from: '+12012926280',
+     from: '+14153048302',
      body: message,
    })
    .then((message) => console.log(message.sid));
