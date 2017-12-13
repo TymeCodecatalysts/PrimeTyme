@@ -23,7 +23,7 @@
                             <div class="message-widget contact-widget">
 
                                 {{#each allContacts}}
-                                <a href="">
+                                <a href="/posts/{{this.id}}">
                                     <div class="user-img"> <img src="/material-lite/assets/images/users/1.jpg" alt="user" class="img-circle"> <span class="profile-status online pull-right"></span> </div>
                                     <div class="mail-contnet">
                                         <h5>{{this.contactFirstName}} {{this.contactLastName}}</h5> <span class="mail-desc">{{this.contactNumber}}</span></div>

@@ -12,7 +12,7 @@ module.exports = {
     router.put('/:title', Redirect.ifNotLoggedIn('/login'), Redirect.ifNotAuthorized('/posts'), this.update);
     router.delete('/:title', Redirect.ifNotLoggedIn('/login'), this.delete);
 
-    router.get('/', Redirect.ifNotLoggedIn('/login'), this.userMsgHistory) // render message history for a specific contact
+    router.get('/:ContactId', Redirect.ifNotLoggedIn('/login'), this.userMsgHistory) // render message history for a specific contact
 
 
     return router;
@@ -22,9 +22,7 @@ module.exports = {
     models.Post.findAll({
       where: {
         userId: req.user.id,
-        ContactId: '7',
-        //ContactId: req.params.ContactId,
-
+        //ContactId: '7',
       }
     }).then((allPosts) => {
       console.log(allPosts)
@@ -52,8 +50,8 @@ module.exports = {
           userId: req.user.id
         }
       }).then((allContacts) => {
-        //res.render('posts', {allPosts, allContacts});
-        res.json(allPosts)
+        res.render('posts', {allPosts, allContacts});
+        //res.json(allPosts)
       })
     })
   },
