@@ -17,7 +17,7 @@ app.use(methodOverride('_method'));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(expressSession(({ secret: 'keyboard cat', resave: false, saveUninitialized: true })));
+app.use(expressSession(({ secret: 'keyboard cat', resave: false, saveUninitialized: true, cookie: {maxAge: 3600000}}))); // make the session last an hr
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
