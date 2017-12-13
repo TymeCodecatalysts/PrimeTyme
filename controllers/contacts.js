@@ -102,43 +102,46 @@ module.exports = {
     }).then((contact) => {
       // Contact does not exist
       //console.log("REQ.USER" + req.user);
-      var idContact;
       if (!contact) {
         models.Contacts.create({
           userId: 1,
           contactFirstName: 'Unknown',
           contactLastName: 'Unknown',
           contactNumber: msgFrom
+        }).then(function(contact) {
+          const now = moment();
+          console.log(now);
+          console.log(now.format("HH:mm:ss"));
+          console.log(now.startOf('day'))
+
+          models.Post.create({                     // New contact is generated when a msg is sent. But the msg is not yet created
+            userId: 1,
+            ContactId: contact.id,
+            title: msgBody,
+            body: msgBody,
+            timeToSend: now.format("HH:mm:ss"),
+            dateToSend: now.startOf('day')
+          
+          })
         });
-        idContact = contact.id;
       }
-      const now = moment();
-      // const hour = now.hour();
-      // const minute = now.minute();
-      // const second = now.second();
-      // const time = [];
-      // time.push(hour);
+      else {
+        const now = moment();
+        console.log(now);
+        console.log(now.format("HH:mm:ss"));
+        console.log(now.startOf('day'))
 
-      // time.push(minute);
-
-      // time.push(second);
-      // const timeVal = time.slice(0, time.length).join(':');
-
-      // console.log("timeval" + timeVal);
-
-      console.log(now);
-      console.log(now.format("HH:mm:ss"));
-      console.log(now.startOf('day'))
-
-      models.Post.create({                     // New contact is generated when a msg is sent. But the msg is not yet created
-        userId: 1,
-        ContactId: idContact,
-        title: msgBody,
-        body: msgBody,
-        timeToSend: now.format("HH:mm:ss"),
-        dateToSend: now.startOf('day')
+        models.Post.create({                     // New contact is generated when a msg is sent. But the msg is not yet created
+          userId: 1,
+          ContactId: contact.id,
+          title: msgBody,
+          body: msgBody,
+          timeToSend: now.format("HH:mm:ss"),
+          dateToSend: now.startOf('day')
         
-      })
+        })
+      }
+      
 
     })
     // models.Contacts.findOne({
