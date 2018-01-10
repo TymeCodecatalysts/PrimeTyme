@@ -33,7 +33,10 @@ function parseDate(dateToSend, timeToSend) {
   var arr = [];
 
   const year = dateToSend.slice(0,4);
-  const month = dateToSend.slice(5,7);
+  var month = dateToSend.slice(5,7);
+  if (month < 10) {
+    month = month[1];
+  }
   var date = dateToSend.slice(-2);
   if (date < 10) {
     date = date[1];
