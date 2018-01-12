@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "A simple blog.",
   "scripts": {
-    "start": "nodemon -L app.js",
+    "start": "node app.js",
     "test": "mocha --recursive tests/"
   },
   "author": "Donato & Edgardo",
