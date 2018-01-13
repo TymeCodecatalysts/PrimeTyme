@@ -28,7 +28,7 @@
                                     <div class="mail-contnet">
                                         <h5>{{this.contactFirstName}} {{this.contactLastName}}</h5> <span class="mail-desc">{{this.contactNumber}}</span></div>
                                         <br>
-                                    <form name="edit-contact" method="GET" action="contacts/{{this.contactFirstName}}/edit" class="inline">
+                                    <form name="edit-contact" method="GET" action="/contacts/{{this.contactFirstName}}/edit" class="inline">
                                         <button type="submit" class="btn btn-success waves-effect waves-dark">Edit</button>
                                     </form>
                                     <form name="delete-contact" method="POST" action="/contacts/{{this.contactFirstName}}?_method=DELETE" class="inline">
